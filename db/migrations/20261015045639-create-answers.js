@@ -13,6 +13,7 @@ module.exports = {
       double_star_used: { type: Sequelize.BOOLEAN, allowNull: false, defaultValue: false },
       protection_used: { type: Sequelize.BOOLEAN, allowNull: false, defaultValue: false },
       created_at: { type: Sequelize.DATE, allowNull: false, defaultValue: Sequelize.fn('now') },
+      
     });
 
     await queryInterface.addConstraint('answers', { type: 'unique', name: 'uq_one_answer_per_question', fields: ['player_id', 'question_id'] });
