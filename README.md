@@ -60,11 +60,23 @@ Base URL: `http://localhost:3001/api/v1`
 
 ## What "completed" means in my game
 
-[One or two sentences: when does a player count as having completed a game? For example: "A player completed the game when they answered every question, even if some answers were wrong or timed out."]
+A player completed the game when they answered every question in the session's question set (where total answers equal total questions), including timeouts. Players who left or stopped before finishing receive completed: false and rank: null
 
 ## Tables
 
-[List your tables, one line each, in the order of your migrations.]
+## Tables
+
+| Table | Purpose |
+| :--- | :--- |
+| `users` | Hosts and players' accounts, with a role (`HOST` or `PLAYER`), per Design Change Notice 01 |
+| `question_sets` | A host's reusable set of questions |
+| `questions` | Questions of a set, with position and time limit |
+| `choices` | Answer options of a question; one is correct |
+| `sessions` | One hosted game: join code, status, timer |
+| `session_players` | A user's seat in a session, with stars and streaks; UNIQUE (`session_id`, `user_id`) |
+| `answers` | One player's answer to one question |
+| `chest_offers` | A Mystery Chest earned on a 5-streak |
+| `chest_slots` | The three rewards inside a chest offer |
 
 ## Database scripts
 
