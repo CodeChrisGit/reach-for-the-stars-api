@@ -26,6 +26,7 @@
 //    WHERE s.status = 'CLOSED'
 //      AND (CAST(:since AS timestamptz) IS NULL OR s.ended_at > :since)
 //    ORDER BY s.ended_at, p.score DESC
+
 const { QueryTypes } = require('sequelize');
 const { sequelize } = require('../models');
 
