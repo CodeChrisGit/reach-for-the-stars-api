@@ -19,7 +19,7 @@
   "engines": {
     "node": ">=22"
   },
-  "author": "CHANGE_ME - your full name",
+  "author": "Chrisjay M. Bibat",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^18.0.7",
