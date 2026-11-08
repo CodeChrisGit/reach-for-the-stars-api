@@ -1,0 +1,562 @@
+{
+	"info": {
+		"_postman_id": "8768cbfc-85bf-4461-8d79-c47371ec2479",
+		"name": "Reach for the Stars API - Week 11",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "58620977"
+	},
+	"item": [
+		{
+			"name": "1. Create Question Set (Valid)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status is 201\", function () {",
+							"  pm.response.to.have.status(201);",
+							"});",
+							"pm.collectionVariables.set(\"setId\", pm.response.json().id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Demo-User",
+						"value": "{{host}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Philippine Literature\",\n  \"subject\": \"Literature\",\n  \"is_public\": true\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/question-sets",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"question-sets"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2. Validation Failed (Title too short)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status is 400\", function () {",
+							"  pm.response.to.have.status(400);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Demo-User",
+						"value": "{{host}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Pi\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/question-sets",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"question-sets"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3. Invalid JSON",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status is 400\", function () {",
+							"  pm.response.to.have.status(400);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Demo-User",
+						"value": "{{host}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Philippine Literature\"\n"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/question-sets",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"question-sets"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4. Unauthorized (No Header)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status is 401\", function () {",
+							"  pm.response.to.have.status(401);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/question-sets",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"question-sets"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "5. Forbidden (Player role)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status is 403\", function () {",
+							"  pm.response.to.have.status(403);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Demo-User",
+						"value": "{{player}}"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/question-sets",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"question-sets"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "6. List Question Sets",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status is 200\", function () {",
+							"  pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Demo-User",
+						"value": "{{host}}"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/question-sets",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"question-sets"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "7. Read One Question Set",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status is 200\", function () {",
+							"  pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Demo-User",
+						"value": "{{host}}"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/question-sets/{{setId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"question-sets",
+						"{{setId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "8. Not Found",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status is 404\", function () {",
+							"  pm.response.to.have.status(404);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Demo-User",
+						"value": "{{host}}"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/question-sets/99999",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"question-sets",
+						"99999"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "9. ID Not a Number",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status is 400\", function () {",
+							"  pm.response.to.have.status(400);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Demo-User",
+						"value": "{{host}}"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/question-sets/abc",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"question-sets",
+						"abc"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "10. Update Question Set",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status is 200\", function () {",
+							"  pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "X-Demo-User",
+						"value": "{{host}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Philippine Literature 101\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/question-sets/{{setId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"question-sets",
+						"{{setId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "11. Not the Owner (Forbidden)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status is 403\", function () {",
+							"  pm.response.to.have.status(403);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "X-Demo-User",
+						"value": "{{otherHost}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Hacked Title\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/question-sets/{{setId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"question-sets",
+						"{{setId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "12. Nothing to Change (Empty Body)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status is 400\", function () {",
+							"  pm.response.to.have.status(400);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "X-Demo-User",
+						"value": "{{host}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/question-sets/{{setId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"question-sets",
+						"{{setId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "13. Delete Question Set",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status is 204\", function () {",
+							"  pm.response.to.have.status(204);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "X-Demo-User",
+						"value": "{{host}}"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/question-sets/{{setId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"question-sets",
+						"{{setId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3001/api/v1"
+		},
+		{
+			"key": "host",
+			"value": "2099-0001"
+		},
+		{
+			"key": "otherHost",
+			"value": "2099-0003"
+		},
+		{
+			"key": "player",
+			"value": "2099-0002"
+		},
+		{
+			"key": "setId",
+			"value": ""
+		}
+	]
+}
