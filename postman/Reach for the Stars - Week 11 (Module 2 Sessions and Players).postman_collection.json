@@ -1,0 +1,603 @@
+{
+  "info": {
+    "_postman_id": "163004b4-5c46-4170-a32e-6e6695153d34",
+    "name": "Reach for the Stars - Week 11 (Module 2 Sessions and Players)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "58620977"
+  },
+  "item": [
+    {
+      "name": "1.A host start a game",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Session created\", () => {\r",
+              "  pm.response.to.have.status(201);\r",
+              "});\r",
+              "\r",
+              "const session = pm.response.json();\r",
+              "pm.collectionVariables.set(\"code\", session.code || session.join_pin);"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Demo-User",
+            "value": "{{host}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"question_set_id\": \"1\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/sessions",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "sessions"
+          ]
+        },
+        "description": "Starts a game. The server makes the six-digit code."
+      },
+      "response": []
+    },
+    {
+      "name": "2. A player tries to start a game",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"status is 403\", function () {",
+              "    pm.response.to.have.status(403);",
+              "});",
+              "pm.test(\"error code is FORBIDDEN\", function () {",
+              "    pm.expect(pm.response.json().error.code).to.eql(\"FORBIDDEN\");",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-Demo-User",
+            "value": "{{player1}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"set_id\": 1,\n    \"max_players\": 10\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/sessions",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "sessions"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "3. Read the game",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"status is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Demo-User",
+            "value": "{{player1}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/sessions/{{code}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "sessions",
+            "{{code}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "4. A code that is not six digits",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"status is 400\", function () {",
+              "    pm.response.to.have.status(400);",
+              "});",
+              "pm.test(\"validation failed\", function () {",
+              "    pm.expect(pm.response.json().error.code).to.eql(\"VALIDATION_FAILED\");",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Demo-User",
+            "value": "{{player1}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/sessions/123",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "sessions",
+            "123"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "5. A code that no game uses",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"status is 404\", function () {",
+              "    pm.response.to.have.status(404);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Demo-User",
+            "value": "{{player1}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/sessions/999999",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "sessions",
+            "999999"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "6. A player joins",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"status is 201\", function () {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "pm.test(\"rejoined is false\", function () {",
+              "    pm.expect(pm.response.json().rejoined).to.eql(false);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-Demo-User",
+            "value": "{{player1}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"nickname\": \"StarSeeker\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/sessions/{{code}}/players",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "sessions",
+            "{{code}}",
+            "players"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "7. The same player joins again",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"status is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "pm.test(\"rejoined is true\", function () {",
+              "    pm.expect(pm.response.json().rejoined).to.eql(true);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-Demo-User",
+            "value": "{{player1}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"nickname\": \"StarSeeker\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/sessions/{{code}}/players",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "sessions",
+            "{{code}}",
+            "players"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "8. A second player takes a used nickname",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"status is 409\", function () {",
+              "    pm.response.to.have.status(409);",
+              "});",
+              "pm.test(\"error code is NICKNAME_TAKEN\", function () {",
+              "    pm.expect(pm.response.json().error.code).to.eql(\"NICKNAME_TAKEN\");",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-Demo-User",
+            "value": "{{player2}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"nickname\": \"StarSeeker\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/sessions/{{code}}/players",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "sessions",
+            "{{code}}",
+            "players"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "9. A nickname that is too short",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"status is 400\", function () {",
+              "    pm.response.to.have.status(400);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-Demo-User",
+            "value": "{{player2}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"nickname\": \"A\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/sessions/{{code}}/players",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "sessions",
+            "{{code}}",
+            "players"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "10. The host starts the game",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"status is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "pm.test(\"status updated to RUNNING\", function () {",
+              "    pm.expect(pm.response.json().status).to.eql(\"RUNNING\");",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "X-Demo-User",
+            "value": "{{host}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"status\": \"RUNNING\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/sessions/{{code}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "sessions",
+            "{{code}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "11. A new player joins too late",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"status is 409\", function () {",
+              "    pm.response.to.have.status(409);",
+              "});",
+              "pm.test(\"error code is SESSION_NOT_JOINABLE\", function () {",
+              "    pm.expect(pm.response.json().error.code).to.eql(\"SESSION_NOT_JOINABLE\");",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-Demo-User",
+            "value": "{{player2}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"nickname\": \"CosmicGamer\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/sessions/{{code}}/players",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "sessions",
+            "{{code}}",
+            "players"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "12. A status change that is not allowed",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"status is 409\", function () {",
+              "    pm.response.to.have.status(409);",
+              "});",
+              "pm.test(\"error code is INVALID_STATUS_CHANGE\", function () {",
+              "    pm.expect(pm.response.json().error.code).to.eql(\"INVALID_STATUS_CHANGE\");",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "X-Demo-User",
+            "value": "{{host}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"status\": \"RUNNING\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/sessions/{{code}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "sessions",
+            "{{code}}"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3001/api/v1"
+    },
+    {
+      "key": "host",
+      "value": "2099-0001"
+    },
+    {
+      "key": "player1",
+      "value": "2099-0002"
+    },
+    {
+      "key": "player2",
+      "value": "2099-0004"
+    },
+    {
+      "key": "code",
+      "value": ""
+    },
+    {
+      "key": "setId",
+      "value": "1"
+    },
+    {
+      "key": "otherHost",
+      "value": ""
+    }
+  ]
+}
