@@ -58,6 +58,24 @@ Base URL: `http://localhost:3001/api/v1`
 | GET | /game-info | Slug, name, group, developer, description, player limits, version | 200 |
 | GET | /results | Finished games, every player, and the top 3. Needs the `X-Hub-Key` header. Optional `?since=` | 200 (401 without the key) |
 
+### Module 1: Question Sets 
+| Method | Path | Purpose | Success |
+|---|---|---|---|
+| GET | /question-sets | List all question sets visible to the caller (Host or Admin) | 200 |
+| POST | /question-sets | Create a new question set (Host/Admin only) | 201 |
+| GET | /question-sets/{id} | Read a specific question set by its ID | 200 |
+| PATCH | /question-sets/{id} | Update fields of a specific question set (Owner/Admin only) | 200 |
+| DELETE | /question-sets/{id} | Delete a specific question set (Owner/Admin only) | 204 |
+
+### Module 2: Game Sessions and Joining
+| Method | Path | Purpose | Success |
+|---|---|---|---|
+| POST | /sessions | Start a new game session with a randomly generated 6-digit PIN (Host/Admin only) | 201 |
+| GET | /sessions/{code} | Read game session details by its 6-digit join code | 200 |
+| PATCH | /sessions/{code} | Change the game session status (e.g., LOBBY -> RUNNING -> CLOSED) | 200 |
+| POST | /sessions/{code}/players | Join a game session or rejoin with the same seat (Any account) | 201 / 200 |
+| GET | /sessions/{code}/players | List participants, nicknames, and current scores in a session | 200 |
+
 ## What "completed" means in my game
 
 [One or two sentences: when does a player count as having completed a game? For example: "A player completed the game when they answered every question, even if some answers were wrong or timed out."]
