@@ -58,6 +58,19 @@ Base URL: `http://localhost:3001/api/v1`
 | GET | /game-info | Slug, name, group, developer, description, player limits, version | 200 |
 | GET | /results | Finished games, every player, and the top 3. Needs the `X-Hub-Key` header. Optional `?since=` | 200 (401 without the key) |
 
+## Demo accounts
+
+After `npm run db:reset`, the seeded demo accounts use this password:
+
+**Password:** `ReachfortheStars`
+
+| Role | School ID |
+|---|---|
+| Admin | `2099-0099` |
+| Host | `2099-0001` |
+| Host | `2099-0002` |
+| Player | `2099-1001` through `2099-1006` |
+
 ### Module 1: Question Sets 
 | Method | Path | Purpose | Success |
 |---|---|---|---|
