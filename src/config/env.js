@@ -14,7 +14,12 @@ if (missing.length > 0) {
 module.exports = {
   nodeEnv: process.env.NODE_ENV || 'development',
   port: Number(process.env.PORT) || 3001,
+  bcryptRounds: 10,
   hubApiKey: process.env.HUB_API_KEY,
+  jwt: {
+    secret: process.env.JWT_SECRET,
+    expiresIn: process.env.JWT_EXPIRES_IN || '1h',
+  },
   db: {
     host: process.env.DB_HOST,
     port: Number(process.env.DB_PORT),
